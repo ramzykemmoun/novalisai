@@ -23,7 +23,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: ProjectPageProps): Promise<Metadata> {
-  const project = getProjectBySlug(params.slug);
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
   if (!project) {
     return {
       title: "Project Not Found",
@@ -36,8 +37,9 @@ export async function generateMetadata({
   };
 }
 
-export default function ProjectPage({ params }: ProjectPageProps) {
-  const project = getProjectBySlug(params.slug);
+export default async function ProjectPage({ params }: ProjectPageProps) {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
 
   if (!project) {
     notFound();
@@ -45,7 +47,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <article className="min-h-screen bg-background pb-20">
-      {/* Hero Section */}
       <div className="relative h-[60vh] w-full overflow-hidden">
         <Image
           src={project.image}
@@ -86,7 +87,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
       <div className="container max-w-5xl mx-auto px-6 pt-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-20">
-          {/* Main Content */}
           <div className="lg:col-span-2 space-y-12">
             <section>
               <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
@@ -148,7 +148,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             )}
           </div>
 
-          {/* Sidebar */}
           <aside className="space-y-8">
             <div className="p-6 rounded-2xl border border-border bg-card shadow-sm sticky top-32">
               <h3 className="font-semibold text-lg mb-4">Project Details</h3>

@@ -29,7 +29,6 @@ export function ProjectCard({ project, layoutId }: ProjectCardProps) {
         <span className="sr-only">View {project.title}</span>
       </Link>
 
-      {/* Image Container */}
       <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
         <Image
           src={project.image}
@@ -40,7 +39,6 @@ export function ProjectCard({ project, layoutId }: ProjectCardProps) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-        {/* Hover Action Badge */}
         <div className="absolute top-4 right-4 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 z-10">
           <div className="p-2 bg-background/90 backdrop-blur-sm rounded-full shadow-sm text-foreground">
             <ArrowUpRight className="w-5 h-5" />
@@ -48,7 +46,6 @@ export function ProjectCard({ project, layoutId }: ProjectCardProps) {
         </div>
       </div>
 
-      {/* Content */}
       <div className="flex flex-col flex-1 p-6">
         <div className="flex justify-between items-start mb-4">
           <Badge

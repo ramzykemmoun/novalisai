@@ -11,104 +11,24 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { bestProjects, getAllProjects } from "@/lib/projects";
 
-interface Project {
-  id: number;
-  title: string;
-  description: string;
-  longDescription: string;
-  images: string[];
-  links: { label: string; href: string }[];
-  tags: string[];
-}
+const projects = bestProjects();
 
-const projects: Project[] = [
-  {
-    id: 1,
-    title: "Timeline",
-    description: "Building a seamless path to better cellular health",
-    longDescription:
-      "With Timeline, we revolutionized how users track and improve their wellness journey through intuitive interfaces and real-time analytics. The platform integrates seamlessly with wearable devices to provide comprehensive health insights.",
-    images: [
-      "https://images.unsplash.com/photo-1460925895917-adf4e565db10?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&h=600&fit=crop",
-    ],
-    links: [
-      { label: "Visit Website", href: "#" },
-      { label: "View Case Study", href: "#" },
-    ],
-    tags: ["Design", "Health", "Frontend"],
-  },
-  {
-    id: 2,
-    title: "Siesta Campers",
-    description: "Elevating Portugal's premier van rental experience",
-    longDescription:
-      "We crafted an immersive experience that showcases their fleet and booking system to nomadic travelers worldwide. The redesign focuses on mobile responsiveness and simplified booking flows to increase conversion rates.",
-    images: [
-      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=800&h=600&fit=crop",
-    ],
-    links: [
-      { label: "Explore", href: "#" },
-      { label: "Learn More", href: "#" },
-    ],
-    tags: ["Design", "Travel", "E-commerce"],
-  },
-  {
-    id: 3,
-    title: "Dr. Julia Woehr",
-    description: "Distilling architectural impact to its spatial essence",
-    longDescription:
-      "We created a portfolio platform that showcases architectural designs with unprecedented clarity and aesthetic appeal. The minimalist interface allows the visual work to take center stage while providing easy navigation.",
-    images: [
-      "https://images.unsplash.com/photo-1493195671595-30a332807d65?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1452175543248-32588e0ab2fe?w=800&h=600&fit=crop",
-    ],
-    links: [
-      { label: "Portfolio", href: "#" },
-      { label: "Contact", href: "#" },
-    ],
-    tags: ["Architecture", "Portfolio", "Design"],
-  },
-  {
-    id: 4,
-    title: "Dr. Julia Woehr",
-    description: "Distilling architectural impact to its spatial essence",
-    longDescription:
-      "We created a portfolio platform that showcases architectural designs with unprecedented clarity and aesthetic appeal. The minimalist interface allows the visual work to take center stage while providing easy navigation.",
-    images: [
-      "https://images.unsplash.com/photo-1493195671595-30a332807d65?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1452175543248-32588e0ab2fe?w=800&h=600&fit=crop",
-    ],
-    links: [
-      { label: "Portfolio", href: "#" },
-      { label: "Contact", href: "#" },
-    ],
-    tags: ["Architecture", "Portfolio", "Design"],
-  },
-];
-
-interface ProjectShowcaseProps {}
-
-const ProjectShowcase: React.FC<ProjectShowcaseProps> = () => {
+const ProjectShowcase: React.FC = () => {
   const [activeProject, setActiveProject] = useState(0);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const project = projects[activeProject];
-  const currentImage = project.images[activeImageIndex];
+  const currentImage = project.gallery[activeImageIndex];
 
   const nextImage = () => {
-    setActiveImageIndex((prev) => (prev + 1) % project.images.length);
+    setActiveImageIndex((prev) => (prev + 1) % project.gallery.length);
   };
 
   const prevImage = () => {
     setActiveImageIndex((prev) =>
-      prev === 0 ? project.images.length - 1 : prev - 1,
+      prev === 0 ? project.gallery.length - 1 : prev - 1,
     );
   };
 
@@ -220,11 +140,14 @@ const ProjectShowcase: React.FC<ProjectShowcaseProps> = () => {
 
             <div className="mt-8 pt-8 border-t border-border hidden lg:block">
               <Button
+                asChild
                 variant="link"
                 className="p-0 h-auto text-primary hover:text-primary/80 font-semibold group flex items-center gap-2"
               >
-                View All Projects{" "}
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <Link href="/projects" className="flex items-center gap-2">
+                  View All Projects
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </Link>
               </Button>
             </div>
           </div>
@@ -274,7 +197,7 @@ const ProjectShowcase: React.FC<ProjectShowcaseProps> = () => {
                   </div>
 
                   <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-black/60 backdrop-blur-md text-white text-xs font-medium rounded-full border border-white/10">
-                    {activeImageIndex + 1} / {project.images.length}
+                    {activeImageIndex + 1} / {project.gallery.length}
                   </div>
                 </div>
 
@@ -301,7 +224,7 @@ const ProjectShowcase: React.FC<ProjectShowcaseProps> = () => {
                   <div className="flex flex-col gap-6 justify-end items-start md:items-end">
                     {/* Thumbnails */}
                     <div className="flex gap-3">
-                      {project.images.map((img, idx) => (
+                      {project.gallery.map((img, idx) => (
                         <button
                           key={idx}
                           onClick={() => setActiveImageIndex(idx)}
@@ -318,25 +241,6 @@ const ProjectShowcase: React.FC<ProjectShowcaseProps> = () => {
                             className="object-cover"
                           />
                         </button>
-                      ))}
-                    </div>
-
-                    <div className="flex gap-3 w-full md:w-auto">
-                      {project.links.map((link, i) => (
-                        <Button
-                          key={i}
-                          asChild
-                          variant={i === 0 ? "default" : "outline"}
-                          className="flex-1 md:flex-none"
-                        >
-                          <Link
-                            href={link.href}
-                            className="flex items-center gap-2"
-                          >
-                            {link.label}
-                            <ExternalLink className="w-4 h-4" />
-                          </Link>
-                        </Button>
                       ))}
                     </div>
                   </div>

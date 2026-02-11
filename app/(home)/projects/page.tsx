@@ -24,7 +24,6 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-6 overflow-hidden">
         <div className="absolute top-0 inset-x-0 h-96 bg-gradient-to-b from-secondary/30 to-background z-0 pointer-events-none" />
 
@@ -40,7 +39,6 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Projects Grid Section */}
       <section className="px-6 pb-24 md:pb-32 max-w-7xl mx-auto">
         <CategoryFilter
           categories={categories}

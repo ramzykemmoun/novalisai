@@ -73,7 +73,7 @@ export default function Hero() {
             variant="default"
             className="px-8 heading-6 rounded-full text-white font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all duration-300"
           >
-            <Link href="/#projects" className="flex items-center gap-2">
+            <Link href="/projects" className="flex items-center gap-2">
               View Projects
             </Link>
           </Button>
